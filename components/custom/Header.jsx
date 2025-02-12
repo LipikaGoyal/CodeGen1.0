@@ -1,13 +1,15 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import Image from 'next/image'
 import { Button } from '../ui/button'
 import Colors from '@/data/Colors'
 import { UserDetailsContext } from '@/context/UserDetailContext'
 import { useRouter } from 'next/navigation'
+import SignInDialog from './SignInDialog'
 
 function Header() {
     const {userDetails, setUserDetails} = useContext(UserDetailsContext);
     const router = useRouter();
+    const [openDialog, setOpenDialog] = useState(false);
 
     const navigateHome = () => {
         router.push('/');
@@ -45,10 +47,14 @@ function Header() {
           </div>
         ) : (
           <div className='flex gap-5'>
-            <Button variant="ghost">Sign In</Button>
-            <Button className="text-white" style={{backgroundColor:Colors.BLUE}}>Get Started</Button>
+            <div><Button variant="ghost" onClick={()=>setOpenDialog(true)}>Sign In</Button></div>
+            <Button className="text-white" style={{backgroundColor:Colors.BLUE}} onClick={()=>setOpenDialog(true)}>Get Started</Button>
           </div>
         )}
+        <SignInDialog
+        openDialog={openDialog}
+        closeDialog={(v) => setOpenDialog(v)}
+      />
     </div>
   )
 }
